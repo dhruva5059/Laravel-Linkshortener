@@ -7,7 +7,10 @@ Route::post('/createShortLink', array (
    'as' => 'createShortLink',
    'uses' => 'LinkController@createShortLink'
 ));
-
+Route::get('/shortLink',array (
+  'as' => 'getShortLink',
+  'uses' => 'LinkController@getShortLink'
+));
 
 /*
 |--------------------------------------------------------------------------
