@@ -31,7 +31,7 @@ class LinkController extends Controller
            }
         }
 	//return redirect('')->with('shorturl','<a href="'.$shorturl.'">'.$shorturl.'</a>');
-        return view('')->with('shorturl','<a href="google123">google123</a>');
+        return view('', ['shorturl' => '<a href="google123">google123</a>']);
     }
 
 
