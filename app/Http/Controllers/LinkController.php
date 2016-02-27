@@ -18,7 +18,7 @@ class LinkController extends Controller
     public function createShortLink() {
         $url = Input::get('url');        
         $ifExist = LinkShortener::where('url', $url);
-	echo 'hiii';
+	
        if($ifExist->count() == 1) { 
           $shorturl = $ifExist->first()->shorturl;
         }
@@ -31,7 +31,8 @@ class LinkController extends Controller
            }
         }
 	//return redirect('')->with('shorturl','<a href="'.$shorturl.'">'.$shorturl.'</a>');
-        return view('', ['shorturl' => '<a href="google123">google123</a>']);
+        $val = '<a href="'.$shorturl.'">'.$shorturl.'</a>';
+	return view('home', ['shorturl' => '<a href="'.$shorturl.'">'.$shorturl.'</a>']);
     }
 
 
