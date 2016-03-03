@@ -13,13 +13,15 @@ use Illuminate\Support\Facades\View;
 
 class LinkController extends Controller
 {
-
-
     public function createShortLink() {
-        $url = Input::get('url');        
-        $ifExist = LinkShortener::where('url', $url);
-	
-       if($ifExist->count() == 1) { 
+        $url = Input::get('url');      
+
+
+	if(LinkController::url_exists($url)) {
+
+  
+        $ifExist = LinkShortener::where('url', $url);	
+        if($ifExist->count() == 1) { 
           $shorturl = $ifExist->first()->shorturl;
         }
         else {
@@ -30,21 +32,38 @@ class LinkController extends Controller
 		LinkShortener::where('id',$insert->id)->update(array('shorturl' =>  $shorturl));
            }
         }
-	//return redirect('')->with('shorturl','<a href="'.$shorturl.'">'.$shorturl.'</a>');
-        $val = '<a href="'.$shorturl.'">'.$shorturl.'</a>';
-	return view('home', ['shorturl' => '<a href="'.$shorturl.'">'.$shorturl.'</a>']);
+	return view('home', ['shorturl' => '<a href="'.$shorturl.'">http://dhru.va/'.$shorturl.'</a>']);
+	
+
+	}
+	else {
+
+	return view('home', ['shorturl' => ' URL does not exist']);
+	}
+
+		
+
     }
-
-
     public function getShortLink($shorturl) {
         $url = LinkShortener::where('shorturl', $shorturl);
 	if($url->count() == 1) {
-		//echo "inside if";
 		return redirect($url->first()->url);
 	}
 	else {
-		//echo 'inside else';
 		return redirect('');
 	}
+    }
+    public function url_exists($url) {
+    	$curl = curl_init();
+	curl_setopt_array( $curl, array(
+   	CURLOPT_RETURNTRANSFER => true,
+    	CURLOPT_URL => $url ) );
+	curl_exec( $curl );
+	$response_code = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+	curl_close( $curl );
+	if($response_code==0) {
+		return false;
+        }
+	return true;
     }
 }
